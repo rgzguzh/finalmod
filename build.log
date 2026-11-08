@@ -1,0 +1,405 @@
+build.log initialized 2026-11-08T12:51:52Z
+
+===== [2026-11-08T12:51:52Z] $ unzip -o -q Among_Us_latest.xapk -d work/xapk/ =====
+----- exit=0 -----
+
+===== [2026-11-08T12:52:58Z] $ java -jar tools/APKEditor.jar m -i work/xapk/ -o work/amongus_merged.apk =====
+00.000 I: [MERGE] Using: APKEditor version 1.4.3, ARSCLib version 1.3.6
+      -i = work/xapk              
+      -o = work/amongus_merged.apk
+ ________________________________ 
+00.031 I: [MERGE] Searching apk files ...
+00.033 I: [MERGE] Found apk files: 3
+00.561 I: [MERGE] Found modules: 3
+00.686 I: [MERGE] Merging: com.innersloth.spacemafia
+00.688 I: [MERGE] Added [com.innersloth.spacemafia] classes.dex -> classes.dex
+00.689 I: [MERGE] Added [com.innersloth.spacemafia] classes2.dex -> classes2.dex
+00.689 I: [MERGE] Added [com.innersloth.spacemafia] classes3.dex -> classes3.dex
+00.689 I: [MERGE] Added [com.innersloth.spacemafia] classes4.dex -> classes4.dex
+01.221 I: [MERGE] Merging: UnityDataAssetPack
+01.263 I: [MERGE] Added as fused module <UnityDataAssetPack>
+01.263 I: [MERGE] Merging: config.arm64_v8a
+01.310 I: [MERGE] Sanitizing manifest ...
+01.316 I: [MERGE] Removed-attribute : @0x0101064e
+01.317 I: [MERGE] Removed-attribute : @0x0101064f
+01.318 I: [MERGE] Removed-element : <meta-data> name="com.android.vending.splits.required"
+01.321 I: [MERGE] Removed-element : <meta-data> name="com.android.stamp.source"
+01.321 I: [MERGE] Removed-element : <meta-data> name="com.android.stamp.type"
+01.323 I: [MERGE] Removed-table-entry : res/xml/splits0.xml
+01.327 I: [MERGE] Removed-element : <meta-data> name="com.android.vending.splits"
+01.329 I: [MERGE] Removed-element : <meta-data> name="com.android.vending.derived.apk.id"
+01.394 I: [MERGE] Applying: extractNativeLibs=true
+01.394 I: [MERGE] Writing apk ...
+01.418 I: [MERGE] Buffering compress changed files ...
+01.956 I: [MERGE] Writing files: 1112
+17.939 I: [MERGE] Writing signature block ...
+18.421 I: [MERGE] Saved to: work/amongus_merged.apk
+----- exit=0 -----
+
+===== [2026-11-08T12:53:30Z] $ java -Xmx6g -jar tools/apktool.jar d work/amongus_merged.apk -o work/decompiled_check/ -f --frame-path /tmp/fw =====
+I: Using Apktool 2.11.1 on amongus_merged.apk with 2 threads
+I: Baksmaling classes.dex...
+I: Loading resource table...
+I: Decoding file-resources...
+I: Loading resource table from file: /tmp/fw/1.apk
+I: Decoding values */* XMLs...
+I: Decoding AndroidManifest.xml with resources...
+I: Regular manifest package...
+I: Baksmaling classes2.dex...
+I: Baksmaling classes3.dex...
+I: Baksmaling classes4.dex...
+I: Copying original files...
+I: Copying assets...
+I: Copying lib...
+I: Copying unknown files...
+----- exit=0 -----
+
+===== [2026-11-08T12:55:08Z] $ env DOTNET_ROLL_FORWARD=Major dotnet tools/Il2CppDumper/Il2CppDumper.dll work/il2cpp/libil2cpp.so work/il2cpp/global-metadata.dat work/dump/ =====
+Initializing metadata...
+Metadata Version: 31
+Initializing il2cpp file...
+Applying relocations...
+WARNING: find JNI_OnLoad
+ERROR: This file may be protected.
+Il2Cpp Version: 31
+Searching...
+CodeRegistration : 46ff1d0
+MetadataRegistration : 4873740
+Dumping...
+Done!
+Generate struct...
+Done!
+Generate dummy dll...
+Done!
+Unhandled exception.Press any key to exit...
+ System.InvalidOperationException: Cannot read keys when either application does not have a console or when console input has been redirected. Try Console.Read.
+   at System.ConsolePal.ReadKey(Boolean intercept)
+   at Il2CppDumper.Program.Main(String[] args) in C:\projects\il2cppdumper\Il2CppDumper\Program.cs:line 110
+----- exit=134 -----
+
+===== PHASE 2 RESULT: IL2CPP ANALYSIS =====
+tool: Il2CppDumper v6.7.46 (net7, DOTNET_ROLL_FORWARD=Major on net9 runtime)
+warning "ERROR: This file may be protected" is benign (only JNI_OnLoad lookup failed);
+CodeRegistration=0x46ff1d0 MetadataRegistration=0x4873740 were found and the dump completed.
+verify: RVA->file-offset delta 0x4000 matches PT_LOAD[1]; prologues at all sampled offsets are valid arm64.
+NOTE: dump.cs RVA column == VA column; use file 'offset' column for patching.
+outputs: work/dump/dump.cs (997459 lines), il2cpp.h, script.json, stringliteral.json, DummyDll/
+offsets.json: 25 classes / 57 methods + field offsets.
+
+===== PHASE 3 DECISION =====
+base_impostor (Devilx86/ImpostorModmenu) - CLONED, REJECTED AS NATIVE BASE:
+ - last commit 2021-06-25; targets Among Us ~v2020.11-2021.4
+ - hook addresses are hardcoded uintptr_t literals in app/src/main/cpp/func.h (only two arch tables:
+   armeabi-v7a and arm64-v8a), no runtime signature resolution -> invalid for 2026.11.3
+ - illegal write path: func.h resolves rpcSetScanner / rpcRepairSystem / repairSystem /
+   rpcMurderPlayer via getAbsoluteAddress(...,true) i.e. write-to-.text at those literals.
+   On 2026.11.3 those literals point into unrelated code/data => SIGSEGV at startup.
+ - 5 of its 10 patch/critical targets no longer exist (see offsets.json legacy_absent_in_this_build)
+ - outputs .so is gitignored/absent; would require NDK+gradle to build, then still fail on offsets
+ => cannot "compile cleanly against the current game version". Rejected on evidence, not guesswork.
+base_malum (AstralKitsune/MalumMenu-Android) - CLONED, ACCEPTED AS THE BASE:
+ - pushed 2026-11-07 (current); version targeted 2.1.1
+ - TS/Frida on frida-il2cpp-bridge + frida-java-menu: resolves classes/methods BY NAME at runtime,
+   so it survives the renames found in phase 2 (Kill->MurderPlayer etc.) without offset patching
+ - README explicitly states its default build CANNOT coexist with the official app
+   ("Do I need to uninstall the original Among Us? A: Currently yes, as it has the same package name")
+   -> our job is exactly the piece it lacks: full package rename + core-library injection.
+
+===== [2026-11-08T13:23:05Z] $ java -Xmx6g -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 --frame-path /tmp/fw =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Smaling smali folder into classes.dex...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Checking whether sources have changed...
+I: Smaling smali_classes2 folder into classes2.dex...
+I: Checking whether sources have changed...
+I: Smaling smali_classes3 folder into classes3.dex...
+I: Checking whether sources have changed...
+I: Smaling smali_classes4 folder into classes4.dex...
+----- exit=143 -----
+
+===== PHASE 4: FEATURE IMPLEMENTATION =====
+project: work/menu (TypeScript, frida-compile -> dist/agent.js)
+css: package.json type=module, tsconfig module=ES2020 resolution=bundler; relative imports need .js
+build: cd work/menu && npx frida-compile src/index.ts --output dist/agent.js
+result: dist/agent.js 1113790 bytes, 0 require() calls, 0 upstream branding (grep MalumMenu = 0)
+modules: Game, AssemblyHelper, Logger, Movement, Visuals, Sabotage, Troll, Roles, Host,
+         Passive, Original, MenuUI, State, LayoutConfig
+per-frame driver: HudManager.Update hook -> chat limit, ESP, sabotage loop, attachments, mimicry, crash
+kill log: PlayerControl.MurderPlayer hook
+vision:   ShipStatus.CalculateLightRadius hook
+cosmetics: PlayerPurchasesData.GetPurchase -> true   (PASSIVE)
+account:   AccountManager.CanPlayOnline -> true      (free chat / guest)
+
+===== PHASE 5: RENAME / INJECT / REPACK =====
+5.1 decompile: reused Phase-1 decode copied to work/game (1.5G), avoided a second 10-min decode
+5.2 manifest package   -> com.innersloth.spacemafia.mod
+5.3 authorities        -> 5 providers renamed (androidx-startup, Ironsource, LevelPlay, Sentry x2)
+5.4 component names    -> EosUnityPlayerActivity, DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+5.5 smali: smali_classes3/com/innersloth/spacemafia/*.smali -> .../spacemafia/mod/
+    sed Lcom/innersloth/spacemafia/ -> Lcom/innersloth/spacemafia/mod/   (single pass)
+    sed com.innersloth.spacemafia   -> com.innersloth.spacemafia.mod     (const strings)
+    residual old descriptors after build: 0 (checked in extracted classes*.dex bytes)
+5.6 mod menu hardcoded refs: none present (agent resolves only by IL2CPP names)
+5.7 app_name -> "Among Us Mod"
+5.8 injection (NO root, NO extra service/activity):
+    lib/arm64-v8a/libfrida-gadget.so           (frida-gadget 17.26.2 android-arm64)
+    lib/arm64-v8a/libfrida-gadget.config.so    {"interaction":{"type":"script","path":"libfrida-gadget.script.so","on_load":"resume"}}
+    lib/arm64-v8a/libfrida-gadget.script.so    (agent.js)
+    patched EosUnityPlayerActivity.<clinit> to System.loadLibrary("frida-gadget") before EOSSDK
+    added android.permission.SYSTEM_ALERT_WINDOW
+    doc check: gadget resolves "path" relative to the gadget binary; config must be
+    lib<name>.config.so beside lib<name>.so (frida docs, gadget.md) -> layout matches
+5.9 build: java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2
+    NOTE: -Xmx6g was SIGTERM'd (exit 143) by the OOM killer; 3GB free, no swap. -Xmx2200m OK.
+    output 1135241110 bytes; aapt2 badging: package=com.innersloth.spacemafia.mod label="Among Us Mod"
+    zipalign -p -f 4  -> verification successful
+    keytool RSA 2048 / mod.keystore alias mod  (credential documented in README)
+    apksigner sign    -> output/AmongUs_ModMenu.apk 1135346401 bytes
+    apksigner verify  -> v1 false, v2 true, v3 true  (minSdk 26 -> v2 sufficient)
+    sha256 b6fe433fc1710cb91c017e3884b6f0fc5dd59fe460e570ec4f19b604d98d6f40
+
+===== PHASE 5.10 / 6: DEVICE VALIDATION =====
+BLOCKED - environment limitation, not a build failure.
+  - XAPK ships ONLY lib/arm64-v8a (verified: single config.arm64_v8a split, abiFilters arm64)
+  - no ARM device attached: `adb devices` -> "List of devices attached" (empty)
+  - x86_64 emulator cannot execute libil2cpp.so (no arm64 guest support), so the game
+    cannot be launched here even though /dev/kvm exists
+  => dual-install (mandatory gate) and in-game feature checks were NOT executed.
+  => provided scripts/verify_device.sh which performs exactly those checks and maps each
+     INSTALL_FAILED_* code to its cause.
+Static checks that WERE executed: signature, alignment, package rename in dex+manifest,
+manifest parse, label, dex/asset/library integrity.
+
+===== FINAL ARTIFACTS =====
+output/AmongUs_ModMenu.apk   signed
+offsets.json                 25 classes / 57 methods + fields
+README.md                    feature matrix, tags, limitations, credentials, hashes
+scripts/verify_device.sh     on-device verification
+work/menu/                   agent source + dist/agent.js
+build.log                    this file
+
+===== [2026-11-08T14:49:53Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----
+
+===== [2026-11-08T14:52:25Z] $ zipalign -p -f 4 work/amongus_modded_unsigned.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:52:51Z] $ zipalign -c -p 4 work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:52:58Z] $ apksigner sign --ks mod.keystore --ks-pass pass:modpass --key-pass pass:modpass --out output/AmongUs_ModMenu.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:53:44Z] $ apksigner verify --print-certs output/AmongUs_ModMenu.apk =====
+Signer #1 certificate DN: CN=ModMenu, OU=Mod, O=Mod, L=NA, ST=NA, C=US
+Signer #1 certificate SHA-256 digest: 1e7a561be7f9fe0c7e5ac597bbbaa9bf0da7ff5df22ac1818265840cb0a11aec
+Signer #1 certificate SHA-1 digest: 4ed1f1c6e0de6a1b84d7b87f29eec366708f16a4
+Signer #1 certificate MD5 digest: a05f90c27002b0a70158c5be0ef8bdb0
+----- exit=0 -----
+
+===== [2026-11-08T14:54:27Z] $ apksigner verify -v output/AmongUs_ModMenu.apk =====
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+----- exit=0 -----
+
+===== [2026-11-08T14:56:21Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----
+
+===== [2026-11-08T14:57:15Z] $ zipalign -p -f 4 work/amongus_modded_unsigned.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:57:38Z] $ zipalign -c -p 4 work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:57:38Z] $ apksigner sign --ks mod.keystore --ks-pass pass:modpass --key-pass pass:modpass --out output/AmongUs_ModMenu.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T14:58:36Z] $ apksigner verify output/AmongUs_ModMenu.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:04:20Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----
+
+===== [2026-11-08T15:05:14Z] $ zipalign -p -f 4 work/amongus_modded_unsigned.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:05:40Z] $ zipalign -c -p 4 work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:05:40Z] $ apksigner sign --ks mod.keystore --ks-pass pass:modpass --key-pass pass:modpass --out output/AmongUs_ModMenu.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:06:23Z] $ apksigner verify output/AmongUs_ModMenu.apk =====
+----- exit=0 -----
+
+===== PHASE 7: MENU-VISIBILITY FIX (agent 1.0.1) =====
+Symptom reported on device: stock-looking Among Us (US build), no menu at all;
+overlay/"Display over other apps" permission was surfaced by the previous build.
+
+ROOT CAUSES (found in the bundled library + our entrypoint, both verified in source):
+ 1) frida-java-menu/dist/menu.js : Composer constructor
+      if (!overlay.check()) { overlay.ask(); setTimeout(async () => (await activityInstance).finish(), 3000); }
+    SYSTEM_ALERT_WINDOW is never pre-granted on a fresh install -> the constructor
+    opened the settings screen and then finished the activity after 3 s, and
+    WindowManager.addView(TYPE_APPLICATION_OVERLAY) was rejected (BadTokenException,
+    swallowed by show()'s catch) -> no menu, ever, without a manual appops grant.
+ 2) index.ts built MenuUI.init() ONLY inside Il2Cpp.perform(); any module init
+    throw (or a failed IL2CPP bootstrap) meant the UI was never constructed.
+ 3) Game.cls() cached null class lookups made before assemblies were resolved
+    (build order above), so even a late-initialised il2cpp would stay unusable.
+ 4) LayoutConfig.ts called systemAccentColor() at script-load time (Java/context
+    access during module evaluation) - removed, static colour used.
+
+FIX:
+ - MenuUI rewritten as an IN-WINDOW panel: added to the activity's
+   android.R.id.content FrameLayout as a sibling above Unity's SurfaceView.
+   No overlay permission, no WindowManager, no Composer instance.
+   Layout: titled panel + ScrollView with all 11 previous sections + DIAGNOSTICS.
+   "✕" hides the panel and shows an in-window "MOD" button; "–" collapses the body.
+   Panel is clickable (blocks game input under it only); all other screen areas
+   still pass touches to Unity. 4 s watchdog re-attaches if content view changes.
+ - index.ts: UI first (pure Java), IL2CPP modules after, each in try/catch;
+   MenuUI.refreshHost() re-enables host-only widgets once IL2CPP is ready.
+ - Bridge.ts added: activity discovery by polling Java.choose (no Activity hooks),
+   content-view lookup, dp/screen helpers, main-thread marshalling.
+ - Logger.ts: persists every line to
+   /sdcard/Android/data/com.innersloth.spacemafia.mod/files/modmenu.log
+   and exposes tail()/path()/clear() for the in-menu DIAGNOSTICS section.
+ - Game.cls(): no caching while an assembly image is still unresolved.
+
+STATIC CHECKS EXECUTED HERE:
+  tsc --noEmit                     PASS (0 errors)
+  frida-compile                    PASS
+  no Composer instantiation        PASS (0 occurrences of construction)
+  single-arg add() calls           PASS (0; all additions target this.body)
+  packaged libfrida-gadget.script.so == work/menu/dist/agent.js
+    sha256 38c463239b097b12759897a189af089307cacfca68322008f17b684ce4daf8a2
+  apktool b / zipalign -c / apksigner verify (v2+v3)   PASS
+  aapt2 badging: com.innersloth.spacemafia.mod, label "Among Us Mod"   PASS
+  sha256 output/AmongUs_ModMenu.apk d2c40d0d7a351e776c3556451747786aba2913f6f1ce1f98496a5ec5a3932273
+
+NOT EXECUTED HERE (arm64 device required): install, launch, panel render, features.
+scripts/verify_device.sh now asserts "MOD MENU" in the live view hierarchy via
+uiautomator dump and prints the on-device modmenu.log.
+
+===== [2026-11-08T15:09:10Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----
+
+===== [2026-11-08T15:09:46Z] $ zipalign -p -f 4 work/amongus_modded_unsigned.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:10:07Z] $ zipalign -c -p 4 work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:10:07Z] $ apksigner sign --ks mod.keystore --ks-pass pass:modpass --key-pass pass:modpass --out output/AmongUs_ModMenu.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:10:56Z] $ apksigner verify output/AmongUs_ModMenu.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:12:40Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----
+
+===== [2026-11-08T15:13:17Z] $ zipalign -p -f 4 work/amongus_modded_unsigned.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:13:44Z] $ zipalign -c -p 4 work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:13:44Z] $ apksigner sign --ks mod.keystore --ks-pass pass:modpass --key-pass pass:modpass --out output/AmongUs_ModMenu.apk work/amongus_modded_aligned.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:14:27Z] $ apksigner verify output/AmongUs_ModMenu.apk =====
+----- exit=0 -----
+
+===== [2026-11-08T15:15:01Z] $ apksigner verify -v output/AmongUs_ModMenu.apk =====
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+----- exit=0 -----
+
+===== [2026-11-08T16:10:02Z] $ java -Xmx2200m -jar tools/apktool.jar b work/game -o work/amongus_modded_unsigned.apk --use-aapt2 =====
+I: Using Apktool 2.11.1 on amongus_modded_unsigned.apk with 2 threads
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether sources have changed...
+I: Checking whether resources have changed...
+I: Building resources with aapt2...
+I: Building apk file...
+I: Importing assets...
+I: Importing lib...
+I: Importing unknown files...
+I: Built apk into: work/amongus_modded_unsigned.apk
+----- exit=0 -----

@@ -1,0 +1,418 @@
+{
+ "game": "Among Us",
+ "package": "com.innersloth.spacemafia",
+ "version_name": "2026.11.3",
+ "version_code": 7616,
+ "abi": "arm64-v8a",
+ "il2cpp_metadata_version": 31,
+ "code_registration": "0x46ff1d0",
+ "metadata_registration": "0x4873740",
+ "note": "offset = file offset in libil2cpp.so; rva = arm64 virtual address as dumped",
+ "classes": {
+  "CosmeticsLayer": {
+   "SetColor": {
+    "rva": "0x23f0cc8",
+    "offset": "0x23eccc8",
+    "args": "int color"
+   },
+   "SetHat": {
+    "rva": "0x23f27a0",
+    "offset": "0x23ee7a0",
+    "args": "HatData hatData, int color"
+   },
+   "SetVisor": {
+    "rva": "0x23f2af8",
+    "offset": "0x23eeaf8",
+    "args": "VisorData visorData, int color"
+   },
+   "SetName": {
+    "rva": "0x23f34d4",
+    "offset": "0x23ef4d4",
+    "args": "string nameStr"
+   },
+   "SetSkin": {
+    "rva": "0x23f49f0",
+    "offset": "0x23f09f0",
+    "args": "SkinViewData skin, int color"
+   }
+  },
+  "HatManager": {},
+  "ExileController": {},
+  "NetworkedPlayerInfo": {
+   "SetTasks": {
+    "rva": "0x244fb6c",
+    "offset": "0x244bb6c",
+    "args": "byte[] taskTypeIds"
+   },
+   "RpcSetTasks": {
+    "rva": "0x244fe88",
+    "offset": "0x244be88",
+    "args": "byte[] taskTypeIds"
+   }
+  },
+  "GameManager": {
+   "RpcEndGame": {
+    "rva": "0x20d5b30",
+    "offset": "0x20d1b30",
+    "args": "GameOverReason endReason, bool showAd"
+   }
+  },
+  "GameStartManager": {
+   "BeginGame": {
+    "rva": "0x20e40d0",
+    "offset": "0x20e00d0",
+    "args": ""
+   }
+  },
+  "ChatController": {
+   "SendChat": {
+    "rva": "0x20f9130",
+    "offset": "0x20f5130",
+    "args": ""
+   }
+  },
+  "HudManager": {
+   "ShowTaskComplete": {
+    "rva": "0x2112de8",
+    "offset": "0x210ede8",
+    "args": ""
+   }
+  },
+  "MeetingHud": {},
+  "CustomNetworkTransform": {},
+  "AmongUsClient": {
+   "CoStartGame": {
+    "rva": "0x215a010",
+    "offset": "0x2156010",
+    "args": ""
+   }
+  },
+  "LobbyBehaviour": {},
+  "PlayerAnimations": {},
+  "PlayerControl": {
+   "SetScanner": {
+    "rva": "0x21d4c30",
+    "offset": "0x21d0c30",
+    "args": "bool on, byte cnt"
+   },
+   "SetTasks": {
+    "rva": "0x21d4cb4",
+    "offset": "0x21d0cb4",
+    "args": "List<NetworkedPlayerInfo.TaskInfo> tasks"
+   },
+   "CompleteTask": {
+    "rva": "0x21d5850",
+    "offset": "0x21d1850",
+    "args": "uint idx"
+   },
+   "CheckName": {
+    "rva": "0x21d6094",
+    "offset": "0x21d2094",
+    "args": "string playerName"
+   },
+   "SetName": {
+    "rva": "0x21d6400",
+    "offset": "0x21d2400",
+    "args": "string playerName"
+   },
+   "CoSetName": {
+    "rva": "0x21d6420",
+    "offset": "0x21d2420",
+    "args": "string playerName"
+   },
+   "SetColor": {
+    "rva": "0x21d67a0",
+    "offset": "0x21d27a0",
+    "args": "int bodyColor"
+   },
+   "CoSetColor": {
+    "rva": "0x21d67c0",
+    "offset": "0x21d27c0",
+    "args": "int bodyColor"
+   },
+   "SetNamePlate": {
+    "rva": "0x21d6844",
+    "offset": "0x21d2844",
+    "args": "string namePlateId"
+   },
+   "SetVisor": {
+    "rva": "0x21cfe44",
+    "offset": "0x21cbe44",
+    "args": "string visorId, int colorId"
+   },
+   "SetLevel": {
+    "rva": "0x21d6888",
+    "offset": "0x21d2888",
+    "args": "uint level"
+   },
+   "CoSetLevel": {
+    "rva": "0x21d68a8",
+    "offset": "0x21d28a8",
+    "args": "uint level"
+   },
+   "SetSkin": {
+    "rva": "0x21cfdf8",
+    "offset": "0x21cbdf8",
+    "args": "string skinId, int color"
+   },
+   "SetHat": {
+    "rva": "0x21cfdb8",
+    "offset": "0x21cbdb8",
+    "args": "string hatId, int colorId"
+   },
+   "SetPet": {
+    "rva": "0x21cfe90",
+    "offset": "0x21cbe90",
+    "args": "string petId, int colorId"
+   },
+   "StartMeeting": {
+    "rva": "0x21d77d0",
+    "offset": "0x21d37d0",
+    "args": "NetworkedPlayerInfo target"
+   },
+   "MurderPlayer": {
+    "rva": "0x21d8e40",
+    "offset": "0x21d4e40",
+    "args": "PlayerControl target, MurderResultFlags resultFlags"
+   },
+   "RpcSetScanner": {
+    "rva": "0x21d98d0",
+    "offset": "0x21d58d0",
+    "args": "bool value"
+   },
+   "RpcCompleteTask": {
+    "rva": "0x21dd53c",
+    "offset": "0x21d953c",
+    "args": "uint idx"
+   },
+   "RpcSetRole": {
+    "rva": "0x21dd600",
+    "offset": "0x21d9600",
+    "args": "RoleTypes roleType, bool canOverrideRole = False"
+   },
+   "RpcSetLevel": {
+    "rva": "0x21dd7e4",
+    "offset": "0x21d97e4",
+    "args": "uint level"
+   },
+   "RpcSetName": {
+    "rva": "0x21dde30",
+    "offset": "0x21d9e30",
+    "args": "string name"
+   },
+   "RpcSetColor": {
+    "rva": "0x21d6668",
+    "offset": "0x21d2668",
+    "args": "byte bodyColor"
+   },
+   "RpcSendChat": {
+    "rva": "0x21ddff0",
+    "offset": "0x21d9ff0",
+    "args": "string chatText"
+   },
+   "RpcStartMeeting": {
+    "rva": "0x21d6fa8",
+    "offset": "0x21d2fa8",
+    "args": "NetworkedPlayerInfo info"
+   },
+   "RpcSyncSettings": {
+    "rva": "0x21de6d0",
+    "offset": "0x21da6d0",
+    "args": "byte[] optionsByteArray"
+   }
+  },
+  "PlayerPhysics": {
+   "SetSkin": {
+    "rva": "0x21e54d8",
+    "offset": "0x21e14d8",
+    "args": "string skinId, int color"
+   },
+   "CoEnterVent": {
+    "rva": "0x21e6358",
+    "offset": "0x21e2358",
+    "args": "int id"
+   },
+   "CoExitVent": {
+    "rva": "0x21e63fc",
+    "offset": "0x21e23fc",
+    "args": "int id"
+   },
+   "RpcEnterVent": {
+    "rva": "0x21e686c",
+    "offset": "0x21e286c",
+    "args": "int ventId"
+   },
+   "RpcExitVent": {
+    "rva": "0x21e694c",
+    "offset": "0x21e294c",
+    "args": "int ventId"
+   }
+  },
+  "RoleManager": {
+   "SetRole": {
+    "rva": "0x221afa8",
+    "offset": "0x2216fa8",
+    "args": "PlayerControl targetPlayer, RoleTypes roleType"
+   }
+  },
+  "Console": {
+   "Use": {
+    "rva": "0x2244db4",
+    "offset": "0x2240db4",
+    "args": ""
+   }
+  },
+  "DoorsSystemType": {
+   "UpdateSystem": {
+    "rva": "0x2249880",
+    "offset": "0x2245880",
+    "args": "PlayerControl player, MessageReader msgReader"
+   },
+   "CloseDoorsOfType": {
+    "rva": "0x2249df0",
+    "offset": "0x2245df0",
+    "args": "SystemTypes room"
+   }
+  },
+  "SabotageSystemType": {
+   "UpdateSystem": {
+    "rva": "0x224f834",
+    "offset": "0x224b834",
+    "args": "PlayerControl player, MessageReader msgReader"
+   }
+  },
+  "ShipStatus": {
+   "RepairCriticalSabotages": {
+    "rva": "0x2250ad8",
+    "offset": "0x224cad8",
+    "args": ""
+   },
+   "CloseDoorsOfType": {
+    "rva": "0x2251ce4",
+    "offset": "0x224dce4",
+    "args": "SystemTypes room"
+   },
+   "UpdateSystem": {
+    "rva": "0x2251e70",
+    "offset": "0x224de70",
+    "args": "SystemTypes systemType, PlayerControl player, MessageReader msgReader"
+   },
+   "StartMeeting": {
+    "rva": "0x22533d0",
+    "offset": "0x224f3d0",
+    "args": "PlayerControl reporter, NetworkedPlayerInfo target"
+   },
+   "RpcCloseDoorsOfType": {
+    "rva": "0x2253618",
+    "offset": "0x224f618",
+    "args": "SystemTypes type"
+   },
+   "RpcUpdateSystem": {
+    "rva": "0x22536f0",
+    "offset": "0x224f6f0",
+    "args": "SystemTypes systemType, MessageWriter msgWriter"
+   }
+  },
+  "Vent": {
+   "Use": {
+    "rva": "0x2258b5c",
+    "offset": "0x2254b5c",
+    "args": ""
+   },
+   "EnterVent": {
+    "rva": "0x2258dec",
+    "offset": "0x2254dec",
+    "args": "PlayerControl pc"
+   },
+   "ExitVent": {
+    "rva": "0x22592f0",
+    "offset": "0x22552f0",
+    "args": "PlayerControl pc"
+   }
+  },
+  "NormalPlayerTask": {},
+  "PlayerTask": {},
+  "InnerNetClient": {},
+  "Camera": {}
+ },
+ "fields": {
+  "PlayerControl": {
+   "LocalPlayer": "0x0(static)",
+   "AllPlayerControls": "0x8(static)",
+   "moveable": "0x4C",
+   "cosmetics": "0x50",
+   "inVent": "0x60",
+   "Collider": "0xC8",
+   "MyPhysics": "0xD0",
+   "NetTransform": "0xD8",
+   "myTasks": "0xF8"
+  },
+  "NetworkedPlayerInfo.PlayerOutfit": {
+   "ColorId": "0x10",
+   "HatId": "0x18",
+   "PetId": "0x20",
+   "SkinId": "0x28",
+   "VisorId": "0x30",
+   "NamePlateId": "0x38",
+   "PlayerName": "0x40"
+  },
+  "NetworkedPlayerInfo": {
+   "ColorId": "0x10",
+   "PlayerId": "0x35",
+   "PlayerName": "0x40",
+   "RoleType": "0x50",
+   "RoleWhenAlive": "0x52",
+   "Tasks": "0x70",
+   "IsDead": "0x78"
+  },
+  "HatManager": {
+   "allPets": "0x48",
+   "allHats": "0x50",
+   "allSkins": "0x58",
+   "allVisors": "0x60",
+   "allNamePlates": "0x68"
+  },
+  "Vent": {
+   "Id": "0x20",
+   "Left": "0x28",
+   "Right": "0x30",
+   "Center": "0x38"
+  },
+  "HudManager": {
+   "Chat": "0xA0",
+   "ShadowQuad": "0xC0",
+   "MapButton": "0xE0"
+  },
+  "ShipStatus": {
+   "Systems": "0xF8"
+  }
+ },
+ "static_instances": {
+  "PlayerControl.LocalPlayer": "0x0",
+  "PlayerControl.AllPlayerControls": "0x8",
+  "ShipStatus.Instance": "0x0",
+  "AmongUsClient.Instance": "0x0",
+  "HatManager.Instance": "0x0",
+  "GameData.Instance": "0x0"
+ },
+ "legacy_absent_in_this_build": [
+  "PlayerControl.Kill",
+  "PlayerControl.RpcSetInfected",
+  "ShipStatus.Sabotage",
+  "ShipStatus.CloseDoors",
+  "ShipStatus.RpcRepairSystem",
+  "ShipStatus.RepairSystem",
+  "HatManager.getUnlockedHats",
+  "HatManager.getUnlockedPets",
+  "HatManager.getUnlockedSkins",
+  "StoreManager.getBoughtNoAds",
+  "PlayerPhysics.PhysicsHelpers"
+ ],
+ "renamed_api_notes": {
+  "kill": "PlayerControl.MurderPlayer(PlayerControl,MurderResultFlags)",
+  "sabotage": "ShipStatus.RpcUpdateSystem(SystemTypes,byte|MessageWriter)",
+  "doors": "ShipStatus.RpcCloseDoorsOfType(SystemTypes)",
+  "start_game": "GameStartManager.BeginGame / AmongUsClient.CoStartGame",
+  "role_assign": "RoleManager.SetRole / PlayerControl.RpcSetRole"
+ }
+}

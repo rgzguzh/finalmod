@@ -1,0 +1,24 @@
+{
+  "name": "amongus-modmenu",
+  "version": "1.0.0",
+  "description": "Among Us mod menu (package com.innersloth.spacemafia.mod) - dual-install build",
+  "license": "GPL-3.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "frida-compile src/index.ts --output dist/agent.js --compress",
+    "build:dev": "frida-compile src/index.ts --output dist/agent.js",
+    "watch": "frida-compile src/index.ts --output dist/agent.js --watch"
+  },
+  "devDependencies": {
+    "@types/frida-gum": "^18.6.1",
+    "@types/node": "^22.10.0",
+    "frida-compile": "^16.4.1",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "frida-il2cpp-bridge": "^0.14.0",
+    "frida-java-bridge": "^7.0.13",
+    "frida-java-menu": "github:AstralKitsune/frida-java-menu"
+  },
+  "type": "module"
+}

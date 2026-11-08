@@ -1,0 +1,5 @@
+output/*.apk
+output/*.idsig
+work/*.apk
+*.xapk
+logs/

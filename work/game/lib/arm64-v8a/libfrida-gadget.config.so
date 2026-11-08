@@ -1,0 +1,11 @@
+{
+  "interaction": {
+    "type": "script",
+    "path": "libfrida-gadget.script.so",
+    "on_load": "resume"
+  },
+  "log": {
+    "level": "info",
+    "path": "/storage/emulated/0/Android/data/com.innersloth.spacemafia.mod/files/gadget.log"
+  }
+}
